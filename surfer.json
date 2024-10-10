@@ -1,11 +1,11 @@
 {
   "name": "Zen Browser",
-  "vendor": "Zen HQ",
+  "vendor": "Zen OSS Team",
   "appId": "com.zen.browser",
   "binaryName": "zen",
   "version": {
     "product": "firefox",
-    "version": "130.0"
+    "version": "131.0.2"
   },
   "buildOptions": {
     "generateBranding": true
@@ -18,7 +18,27 @@
       "brandShortName": "Zen Browser",
       "brandFullName": "Zen Browser",
       "release": {
-        "displayVersion": "1.0.0-a.39",
+        "displayVersion": "1.0.1-a.8",
+        "github": {
+          "repo": "zen-browser/desktop"
+        },
+        "archives": {
+          "windows": "windows.mar",
+          "macos-aarch64": "macos-aarch64.mar",
+          "linux": "linux.mar",
+          "macos-x64": "macos-x64.mar",
+          "windows-compat": "windows-generic.mar",
+          "linux-compat": "linux-generic.mar"
+        }
+      }
+    },
+    "twilight": {
+      "backgroundColor": "#282A33",
+      "brandShorterName": "Zen",
+      "brandShortName": "Zen Twilight",
+      "brandFullName": "Zen Twilight",
+      "release": {
+        "displayVersion": "1.0.1-a.7",
         "github": {
           "repo": "zen-browser/desktop"
         },

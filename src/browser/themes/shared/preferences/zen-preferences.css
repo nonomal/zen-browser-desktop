@@ -4,8 +4,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+@namespace html 'http://www.w3.org/1999/xhtml';
+
 :root {
   --zen-settings-secondary-background: light-dark(#f2f4f4, color-mix(in srgb, var(--zen-colors-tertiary) 50%, #0f0f0f 50%));
+  --in-content-box-background: var(--zen-colors-tertiary) !important;
 }
 
 .main-content {
@@ -19,6 +22,22 @@
 
 description {
   margin-top: 0 !important;
+}
+
+@keyframes dialogPopin {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+html|dialog {
+  animation: dialogPopin 0.2s ease-out;
 }
 
 groupbox {
@@ -161,11 +180,22 @@ groupbox h2 {
   margin-bottom: 15px;
 }
 
-#zen-dark-theme-styles-form {
+#zen-dark-theme-styles-form,
+#zen-compact-mode-styles-form {
   display: flex;
   justify-content: space-between;
   gap: var(--space-large);
   margin-top: 5px;
+
+  & .web-appearance-choice-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px 0;
+
+    background: color-mix(in srgb, var(--zen-colors-tertiary) 50%, transparent 50%);
+  }
 }
 
 #zen-expand-tabbar-strat {
@@ -206,6 +236,43 @@ groupbox h2 {
   border-color: var(--zen-primary-color);
 }
 
+.zen-compact-mode-styles-browser-wrapper {
+  width: 55%;
+  height: 60px;
+  display: flex;
+  border-radius: 10px;
+  border: 1px solid var(--zen-colors-border);
+  background: var(--zen-colors-tertiary);
+  position: relative;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+
+  padding: 7px;
+
+  &[left] div {
+    width: 100%;
+    background: var(--zen-primary-color);
+    border-radius: 5px;
+    height: 18px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  &[top] div {
+    width: 18px;
+    background: var(--zen-primary-color);
+    border-radius: 5px;
+    height: 100%;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  &[both] div {
+    width: 100%;
+    height: 100%;
+    background: var(--zen-colors-secondary);
+    border-radius: 5px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
 .zenLooksAndFeelColorOption {
   width: 60px;
   height: 60px;
@@ -239,8 +306,17 @@ groupbox h2 {
 
 /* Workspace */
 
-#category-zen-workspaces > .category-icon {
+#category-zen-tabs-management > .category-icon {
   list-style-image: url('chrome://browser/skin/window.svg');
+}
+
+#zenTabsUnloadDelayContainer {
+  display: flex;
+  align-items: center;
+
+  & #zenTabsUnloadDelay {
+    margin-left: auto;
+  }
 }
 
 /* CKS */
@@ -261,17 +337,29 @@ groupbox h2 {
   user-select: none;
   cursor: text;
   background: transparent;
+  transition: border-color 0.1s;
 }
 
 .zenCKSOption {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+
+  & > vbox {
+    width: fit-content;
+    justify-content: end;
+    min-width: 70%;
+
+    & > label {
+      margin-left: auto;
+    }
+  }
 }
 
 .zenCKSOption > label {
   font-size: 14px;
   color: light-dark(rgba(0, 0, 0, 0.7), rgba(255, 255, 255, 0.7));
+  width: 100%;
 }
 
 .zenCKSOption-input.zenCKSOption-input-not-set {
@@ -283,13 +371,35 @@ groupbox h2 {
   box-shadow: 0 0 0 2px var(--zen-primary-color);
 }
 
+.zenCKSOption-conflict {
+  color: red;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.zenCKSOption-unsafed {
+  color: yellow;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
 .zenCKSOption-input.zenCKSOption-input-invalid {
   border-color: red;
 }
 
-#zenCKSOptions-wrapper > [data-group]:not(:first-of-type) {
-  border-top: 1px solid light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
-  padding-top: 10px;
+.zenCKSOption-input.zenCKSOption-input-unsafed {
+  border-color: yellow;
+}
+
+.zenCKSOption-input.zenCKSOption-input-valid {
+  border-color: green;
+}
+
+#zenCKSOption-wrapper > [data-group] {
+  border-bottom: 1px solid light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
+  padding-top: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 /* Theme builder */
@@ -355,6 +465,10 @@ groupbox h2 {
   padding: var(--space-medium);
   position: relative;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .zenThemeMarketplaceItemConfigureButton {
@@ -363,7 +477,7 @@ groupbox h2 {
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -380,6 +494,10 @@ groupbox h2 {
   margin-right: 10px;
 }
 
+.zenThemeMarketplaceItemPreference:first-of-type {
+  margin-top: 10px;
+}
+
 .zenThemeMarketplaceItemPreference:not(:last-of-type) {
   margin-bottom: 10px;
 }
@@ -390,6 +508,7 @@ groupbox h2 {
 
 .zenThemeMarketplaceItemContent {
   max-width: 100%;
+  width: 100%;
 }
 
 .zenThemeMarketplaceItemTitle,
@@ -425,6 +544,39 @@ groupbox h2 {
   margin-left: auto;
 }
 
+.zenThemeMarketplaceItemPreferenceDialog {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  min-width: 650px;
+}
+
+.zenThemeMarketplaceItemPreferenceDialogTopBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.zenThemeMarketplaceItemPreferenceDialogContent {
+  display: flex;
+  flex-direction: row;
+}
+
+.zenThemeMarketplaceItemPreferenceToggle {
+  align-self: start;
+}
+
+#zenThemeMarketplaceItemContentHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  & moz-toggle {
+    margin-left: 10px;
+  }
+}
+
 /* Disable mozilla's settings */
 
 #dataCollectionCategory,
@@ -432,4 +584,9 @@ groupbox h2 {
 #websiteAdvertisingCategory,
 #websiteAdvertisingGroup {
   display: none !important;
+}
+
+.sync-engine-workspaces .checkbox-icon,
+.sync-engine-workspaces.sync-engine-image {
+  list-style-image: url("chrome://devtools/skin/images/tool-storage.svg");
 }

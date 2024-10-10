@@ -24,7 +24,7 @@ Experience tranquillity while browsing the web without people tracking you!
 
 # Compatibility
 
-Zen is currently built using firefox version `130.0`!
+Zen is currently built using firefox version `131.0.2`!
 
 - Check out the latest [release notes](https://zen-browser.app/release-notes)!
 
@@ -40,6 +40,24 @@ Zen is built with performance in mind, and we have optimized the browser to be a
 
 Zen is available for Linux, macOS, and Windows. You can download the latest version from the official website at [zen-browser.app](https://zen-browser.app/download), or from the [GitHub Releases](https://github.com/zen-browser/desktop/releases) page.
 
+### Windows
+
+#### Winget
+
+- Generic
+
+```
+winget install --id Zen-Team.Zen-Browser
+```
+
+- Optimized
+
+```
+winget install --id Zen-Team.Zen-Browser.Optimized
+```
+
+####
+
 ### macOS
 
 - Requires macOS 10.15 or later
@@ -49,6 +67,33 @@ You can also install Zen using Homebrew:
 
 ```
 brew install --cask zen-browser
+```
+
+### Linux
+
+#### AppImage
+
+- `zsync` is required for the Update feature of the script below
+
+```
+bash <(curl https://updates.zen-browser.app/appimage.sh)
+```
+
+#### Flatpak
+
+```
+flatpak install flathub io.github.zen_browser.zen
+```
+
+#### CachyOS
+##### Generic
+```
+sudo pacman -S zen-browser-bin
+```
+
+##### Optimized 
+```
+sudo pacman -S zen-browser-avx2-bin
 ```
 
 To upgrade the browser to a newer version, use the embedded update functionality in `About Zen`.
@@ -69,25 +114,39 @@ cd desktop
 Install dependencies
 
 ```bash
-npm i
+pnpm install
 ```
 
 Download and bootstrap the browser
 
+```bash
+pnpm run init
 ```
-npm run init
+
+Copy a language pack
+
+```bash
+sh scripts/update-en-US-packs.sh
 ```
 
 Start building the browser
 
-```
-npm run build
+```bash
+pnpm run build
 ```
 
 Finally, run the browser!
 
+```bash
+pnpm start
 ```
-npm start
+
+### Development
+
+To view changes you've made, run
+
+```bash
+pnpm build:ui && pnpm start
 ```
 
 ## Special Thanks

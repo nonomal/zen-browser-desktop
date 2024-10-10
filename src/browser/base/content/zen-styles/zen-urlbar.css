@@ -1,5 +1,9 @@
 /* URL and tool bars */
 
+#urlbar-container {
+  padding-block: 0 !important;
+}
+
 #urlbar {
   --toolbarbutton-border-radius: 10px;
   --urlbarView-separator-color: var(--zen-colors-border);
@@ -171,53 +175,26 @@ button.popup-notification-dropmarker {
   margin-top: 5px;
 }
 
-:root:not([zen-sidebar-legacy='true']) {
-  @media (max-width: 650px) {
-    #urlbar-container {
-      width: calc(176px + 2 * (24px + 2 * var(--toolbarbutton-inner-padding)));
-    }
-
-    #nav-bar[downloadsbuttonshown] #urlbar-container,
-    #nav-bar[unifiedextensionsbuttonshown] #urlbar-container {
-      width: calc(76px + 24px + 2 * var(--toolbarbutton-inner-padding));
-    }
-
-    #nav-bar[downloadsbuttonshown][unifiedextensionsbuttonshown] #urlbar-container {
-      width: 176px;
-    }
-
-    #identity-icon-box {
-      max-width: 70px;
-    }
-
-    #urlbar-zoom-button {
-      display: none;
-    }
+@media (max-width: 550px) {
+  #urlbar-container {
+    width: calc(176px + 2 * (24px + 2 * var(--toolbarbutton-inner-padding)));
   }
-}
 
-:root[zen-sidebar-legacy='true'] {
-  @media (max-width: 550px) {
-    #urlbar-container {
-      width: calc(176px + 2 * (24px + 2 * var(--toolbarbutton-inner-padding)));
-    }
+  #nav-bar[downloadsbuttonshown] #urlbar-container,
+  #nav-bar[unifiedextensionsbuttonshown] #urlbar-container {
+    width: calc(76px + 24px + 2 * var(--toolbarbutton-inner-padding));
+  }
 
-    #nav-bar[downloadsbuttonshown] #urlbar-container,
-    #nav-bar[unifiedextensionsbuttonshown] #urlbar-container {
-      width: calc(76px + 24px + 2 * var(--toolbarbutton-inner-padding));
-    }
+  #nav-bar[downloadsbuttonshown][unifiedextensionsbuttonshown] #urlbar-container {
+    width: 176px;
+  }
 
-    #nav-bar[downloadsbuttonshown][unifiedextensionsbuttonshown] #urlbar-container {
-      width: 176px;
-    }
+  #identity-icon-box {
+    max-width: 70px;
+  }
 
-    #identity-icon-box {
-      max-width: 70px;
-    }
-
-    #urlbar-zoom-button {
-      display: none;
-    }
+  #urlbar-zoom-button {
+    display: none;
   }
 }
 
@@ -228,14 +205,17 @@ button.popup-notification-dropmarker {
 #notification-popup-box {
   border-radius: 6px !important;
 }
-      
+
 /* Border radius on hover */
-#urlbar .urlbar-page-action, #urlbar #tracking-protection-icon-container, #urlbar:not([breakout-extend="true"]) #identity-box:is(:not(.chromeUI), [pageproxystate="invalid"]) #identity-icon-box {
-  border-radius: 6px !important;;
+#urlbar .urlbar-page-action,
+#urlbar #tracking-protection-icon-container,
+#urlbar:not([breakout-extend='true']) #identity-box:is(:not(.chromeUI), [pageproxystate='invalid']) #identity-icon-box {
+  border-radius: 6px !important;
 }
-      
+
 /* Border radius of boxes on the left */
-#identity-box:has(#identity-permission-box:is([hasPermissions], [hasSharingIcon])):not([pageproxystate="invalid"]) #identity-icon-box {
+#identity-box:has(#identity-permission-box:is([hasPermissions], [hasSharingIcon])):not([pageproxystate='invalid'])
+  #identity-icon-box {
   border-top-left-radius: 6px !important;
   border-bottom-left-radius: 6px !important;
   border-top-right-radius: 0 !important;
@@ -243,30 +223,65 @@ button.popup-notification-dropmarker {
 }
 
 /* Extensions or similar */
-#urlbar:not([breakout-extend="true"]) #identity-box.chromeUI:not([pageproxystate="invalid"]) #identity-icon-box {
+#urlbar:not([breakout-extend='true']) #identity-box.chromeUI:not([pageproxystate='invalid']) #identity-icon-box {
   border-radius: 6px 6px 6px 6px !important;
 }
-
 
 /* Notification Stack */
 
 .notificationbox-stack {
+  background: transparent;
 
-  &[notificationside="top"] {
+  &[notificationside='top'] {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: calc(var(--zen-element-separation) * 1.5);
+    right: calc(var(--zen-element-separation) * 1.5);
     width: fit-content;
     max-width: 30rem !important;
 
     & notification-message {
       background: var(--zen-colors-tertiary);
-      border-left: 1px solid var(--arrowpanel-border-color);
-      border-top-left-radius: var(--zen-border-radius);
+      border: 1px solid var(--arrowpanel-border-color);
+      border-radius: var(--zen-border-radius);
 
       &::before {
         display: none;
       }
     }
   }
+}
+
+#nav-bar,
+#zen-sidebar-top-buttons {
+  min-height: var(--zen-toolbar-height) !important;
+  height: var(--zen-toolbar-height) !important;
+  max-height: var(--zen-toolbar-height) !important;
+  display: flex;
+  align-items: center;
+}
+
+/* Other small tweaks */
+#nav-bar-customization-target {
+  /* Don't grow if potentially-user-sized elements (like the searchbar or the
+   * bookmarks toolbar item list) are too wide. This forces them to flex to the
+   * available space as much as possible, see bug 1795260. */
+  min-width: 0;
+
+  --toolbarbutton-inner-padding: var(--zen-toolbar-button-inner-padding);
+
+  /* Add space to beginning of toolbar and make that space click the first <toolbarbutton> */
+  > :is(toolbarbutton, toolbaritem):first-child,
+  > toolbarpaletteitem:first-child > :is(toolbarbutton, toolbaritem) {
+    padding-inline-start: 0;
+  }
+}
+
+/* TODO: Fix this for windows and macos */
+/*.titlebar-button:last-child {
+  padding-right: var(--zen-element-separation) !important;
+}*/
+
+#PersonalToolbar:not([collapsed='true']) {
+  padding-bottom: 6px;
+  padding-left: 0 !important;
 }

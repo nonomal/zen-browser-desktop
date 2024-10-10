@@ -10,20 +10,30 @@
   --inactive-titlebar-opacity: 1;
 }
 
-:root:not([inDOMFullscreen='true']) #tabbrowser-tabpanels {
-  padding-right: var(--zen-element-separation);
-  padding-bottom: var(--zen-element-separation);
+:root:not([inDOMFullscreen='true']):not([chromehidden~='location']):not([chromehidden~='toolbar']) {
+  & #tabbrowser-tabpanels {
+    padding-right: var(--zen-element-separation);
+    padding-bottom: var(--zen-element-separation);
+
+    #browser:has(#navigator-toolbox[zen-right-side='true']) & {
+      padding-right: 0;
+      padding-left: var(--zen-element-separation);
+    }
+  }
+}
+
+:root:is([inDOMFullscreen='true'], [chromehidden~='location'], [chromehidden~='toolbar']) {
+  #navigator-toolbox,
+  #zen-sidebar-splitter {
+    display: none;
+  }
 }
 
 #browser {
   width: 100%;
 }
 
-:not([inDOMFullscreen='true']) #appcontent {
-  overflow: hidden;
-}
-
-:not([inDOMFullscreen='true']) #appcontent,
+:root:not([inDOMFullscreen='true']) #appcontent,
 #sidebar-box {
   /** Sidebar is already hidden in full screen mode */
   border: none;
@@ -36,4 +46,13 @@
 #tabbrowser-tabbox {
   display: flex;
   flex-direction: row;
+  position: relative;
+}
+
+.titlebar-buttonbox-container {
+  height: 100%;
+}
+
+:root:not([inDOMFullscreen='true']) #tabbrowser-tabbox {
+  padding: 2px; /* To allow the web view's shadow to be visible */
 }
